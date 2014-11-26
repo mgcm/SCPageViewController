@@ -176,6 +176,10 @@
 @property (nonatomic, assign) CGFloat decelerationRate;
 
 
+/** The current scrollView contentOffset
+ */
+@property (nonatomic, assign) CGPoint contentOffset;
+
 @end
 
 
@@ -252,5 +256,12 @@
  */
 - (void)pageViewController:(SCPageViewController *)pageViewController
   didNavigateToPageAtIndex:(NSUInteger)pageIndex;
+
+
+/** Delegate method that the pageController calls when a percentage has changed
+ **/
+- (void)pageViewController:(SCPageViewController *)pageViewController
+         didScrollWithScrollView:(UIScrollView *)scrollView
+         forViewController:(UIViewController *)viewController;
 
 @end

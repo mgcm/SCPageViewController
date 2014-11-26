@@ -380,9 +380,17 @@
         
         if(visible) {
             if(self.layouter.navigationType == SCPageLayouterNavigationTypeVertical) {
-                [self.visiblePercentages setObject:@(roundf((CGRectGetHeight(intersection) * 1000) / CGRectGetHeight(nextFrame))/1000.0f) forKey:@([viewController hash])];
+                CGFloat visiblePercentage = roundf((CGRectGetHeight(intersection) * 1000) / CGRectGetHeight(nextFrame))/1000.0f;
+                [self.visiblePercentages setObject:@(visiblePercentage) forKey:@([viewController hash])];
+                if ([self.delegate respondsToSelector:@selector(pageViewController:didScrollWithScrollView:forViewController:)]) {
+                    [_delegate pageViewController:self didScrollWithScrollView:self.scrollView forViewController:viewController];
+                }
             } else {
-                [self.visiblePercentages setObject:@(roundf((CGRectGetWidth(intersection) * 1000) / CGRectGetWidth(nextFrame))/1000.0f) forKey:@([viewController hash])];
+                CGFloat visiblePercentage = roundf((CGRectGetWidth(intersection) * 1000) / CGRectGetWidth(nextFrame))/1000.0f;
+                [self.visiblePercentages setObject:@(visiblePercentage) forKey:@([viewController hash])];
+                if ([self.delegate respondsToSelector:@selector(pageViewController:didScrollWithScrollView:forViewController:)]) {
+                    [_delegate pageViewController:self didScrollWithScrollView:self.scrollView forViewController:viewController];
+                }
             }
         }
         
@@ -754,6 +762,12 @@
     CGRect remainder, throwaway;
     CGRectDivide(r1, &throwaway, &remainder, chopAmount, edge);
     return remainder;
+}
+
+
+- (CGPoint)contentOffset
+{
+    return self.scrollView.contentOffset;
 }
 
 @end
